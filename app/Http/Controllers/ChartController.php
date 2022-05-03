@@ -28,7 +28,8 @@ class ChartController extends Controller
         $res="";
         $labels=[];
         $data=[];
-        return view('charts',compact('res','labels','data'));
+        $avgSize =0;
+        return view('charts',compact('res','labels','data','avgSize'));
     }
 
     public function filter(Request $request)
@@ -47,17 +48,53 @@ class ChartController extends Controller
             $endDate = $request->end_date;
             
             $response = $this->guzzleGet( $startDate,$endDate);
-            $res = (array)json_decode($response);
-            
+            //dd($response);
             $labels =[];
             $data=[];
-            if($res && !empty($res)){
+            $res=[];
+            $avgSize=0;
+            $closetAstroid = '';
+            if($response && !empty($response)){
+                $res = (array)json_decode($response);
                  $res1 = (array)$res['near_earth_objects'];
                  $labels= array_keys($res1);
                  $typeTotals = array_map("count", $res1);
+
+                 $totalNeos = array_values($res1);
+                 $test =[];
+
+                 foreach($totalNeos as $row){
+                        $test=[...$test,...$row];
+                 }
+                 $clsatemp = $test[0]->close_approach_data[0]->epoch_date_close_approach;
+                 $asteroid = $test[0];
+                 $fastestAst =  $test[0]->close_approach_data[0]->relative_velocity->kilometers_per_hour;
+                 $fastAsteroid = $test[0];
+
+                 foreach ($test as $element) {
+                    $avgSize +=$element->absolute_magnitude_h;
+                    $cls = $element->close_approach_data[0]->epoch_date_close_approach;
+                    $fas = $element->close_approach_data[0]->relative_velocity->kilometers_per_hour;
+
+                    if($clsatemp> $cls){
+                        $clsatemp= $cls;
+                        $asteroid = $element;
+                    }
+
+                    if($fastestAst< $fas){
+                        $fastestAst= $fas;
+                        $fastAsteroid = $element;
+                    }
+                 }
+
+                 $avgSize =$avgSize/count($test);
+                 $closedAsteroid ='id='. $asteroid->id .',Distance='. $clsatemp;
+                 $fastAsteroid ='id='. $fastAsteroid->id .',Speed='. $fastestAst;
+
+                 //dd($asteroid->close_approach_data[0]->relative_velocity->kilometers_per_hour);
                  $data= array_values($typeTotals);
             }
-            return view('charts',compact('res','labels','data'));
+            return view('charts',compact('res','labels','data','avgSize','closedAsteroid','fastAsteroid'));
          }
            
     }

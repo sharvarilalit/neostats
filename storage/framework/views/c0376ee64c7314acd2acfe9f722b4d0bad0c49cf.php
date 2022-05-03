@@ -67,7 +67,13 @@ unset($__errorArgs, $__bag); ?>
                 </div>
                </form>
             </div>
+            <div class="col-md-12">
+                <h6>Fastest Asteroid in km/h (Respective Asteroid ID & its speed):<?php echo e($fastAsteroid); ?> </h6>
+                <h6>Closest Asteroid (Respective Asteroid ID & its distance) :<?php echo e($closedAsteroid); ?> </h6>
+                <h6>Average Size of the Asteroids in kilometers :<?php echo e($avgSize); ?></h6>
+            </div>
         </div>
+      
 
 
         <canvas id="myChart" height="100px"></canvas>

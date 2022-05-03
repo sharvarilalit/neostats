@@ -53,7 +53,13 @@
                 </div>
                </form>
             </div>
+            <div class="col-md-12">
+                <h6>Fastest Asteroid in km/h (Respective Asteroid ID & its speed):{{$fastAsteroid}} </h6>
+                <h6>Closest Asteroid (Respective Asteroid ID & its distance) :{{$closedAsteroid}} </h6>
+                <h6>Average Size of the Asteroids in kilometers :{{$avgSize}}</h6>
+            </div>
         </div>
+      
 
 
         <canvas id="myChart" height="100px"></canvas>
