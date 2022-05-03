@@ -66,29 +66,29 @@ class ChartController extends Controller
                  foreach($totalNeos as $row){
                         $test=[...$test,...$row];
                  }
-                 $clsatemp = $test[0]->close_approach_data[0]->epoch_date_close_approach;
+                 $clsaAst = $test[0]->close_approach_data[0]->epoch_date_close_approach;
                  $asteroid = $test[0];
                  $fastestAst =  $test[0]->close_approach_data[0]->relative_velocity->kilometers_per_hour;
                  $fastAsteroid = $test[0];
 
                  foreach ($test as $element) {
                     $avgSize +=$element->absolute_magnitude_h;
-                    $cls = $element->close_approach_data[0]->epoch_date_close_approach;
-                    $fas = $element->close_approach_data[0]->relative_velocity->kilometers_per_hour;
+                    $clsAsteroid = $element->close_approach_data[0]->epoch_date_close_approach;
+                    $fasAsteroid = $element->close_approach_data[0]->relative_velocity->kilometers_per_hour;
 
-                    if($clsatemp> $cls){
-                        $clsatemp= $cls;
+                    if($clsaAst> $clsAsteroid){
+                        $clsaAst= $clsAsteroid;
                         $asteroid = $element;
                     }
 
-                    if($fastestAst< $fas){
-                        $fastestAst= $fas;
+                    if($fastestAst< $fasAsteroid){
+                        $fastestAst= $fasAsteroid;
                         $fastAsteroid = $element;
                     }
                  }
 
                  $avgSize =$avgSize/count($test);
-                 $closedAsteroid ='id='. $asteroid->id .',Distance='. $clsatemp;
+                 $closedAsteroid ='id='. $asteroid->id .',Distance='. $clsaAst;
                  $fastAsteroid ='id='. $fastAsteroid->id .',Speed='. $fastestAst;
 
                  //dd($asteroid->close_approach_data[0]->relative_velocity->kilometers_per_hour);
